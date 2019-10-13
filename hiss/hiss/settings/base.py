@@ -31,6 +31,8 @@ INSTALLED_APPS = [
     "phonenumber_field",
     "customauth.apps.CustomauthConfig",
     "shared.apps.SharedConfig",
+    "team.apps.TeamConfig",
+    "anymail",
 ]
 
 MIDDLEWARE = [
@@ -80,4 +82,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = "/static/"
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "..", "static/")]
+STATIC_ROOT = "public/"
+APPEND_SLASH = True
 AUTH_USER_MODEL = "user.User"

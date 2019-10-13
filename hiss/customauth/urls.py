@@ -1,7 +1,6 @@
+from customauth import forms, views
 from django.contrib.auth import views as auth_views
 from django.urls import path
-
-from customauth import forms, views
 
 app_name = "customauth"
 urlpatterns = [
