@@ -36,9 +36,7 @@ def create_rsvp_deadline(user: User, deadline: timezone.datetime) -> None:
     user.save()
 
 
-def build_approval_email(
-    application: Application, rsvp_deadline: timezone.datetime
-) -> Tuple[str, str, None, List[str]]:
+def build_approval_email(application: Application, rsvp_deadline: timezone.datetime) -> Tuple[str, str, None, List[str]]:
     """
     Sends an email to a queryset of users, each with a message indicating that a `User`'s
     application has been approved.

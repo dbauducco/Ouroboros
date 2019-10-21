@@ -56,9 +56,9 @@ class SharedTestCase(test.TestCase):
             **self.resume_file_data,
         }
 
-    def create_active_wave(self):
         start = timezone.now() - timezone.timedelta(days=1)
         end = start + timezone.timedelta(days=30)
-
         self.wave1 = Wave(start=start, end=end, num_days_to_rsvp=30)
+
+    def create_active_wave(self):
         self.wave1.save()

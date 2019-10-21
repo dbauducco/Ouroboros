@@ -27,16 +27,14 @@ class EmailUserManager(auth_models.UserManager):
         extra_fields.setdefault("is_superuser", False)
         return self._create_user(email, password, **extra_fields)
 
-    def create_superuser(
-        self, email, password, **extra_fields
-    ):  # pylint: disable=W0221
+    def create_superuser(self, email, password, **extra_fields):  # pylint: disable=W0221
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("is_active", True)
         return self._create_user(email, password, **extra_fields)
 
 
-class User(auth_models.AbstractUser, auth_models.PermissionsMixin):
+class User(auth_models.AbstractUser):
     """
     A representation of a user within the registration system. Users are uniquely identified by their email,
     and are inactive until they confirm their email.
