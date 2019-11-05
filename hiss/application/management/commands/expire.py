@@ -12,5 +12,5 @@ class Command(BaseCommand):
         self.stdout.write("Going to expire %s applications" % (unconfirmed.count()))
         expired = unconfirmed.update(status=STATUS_EXPIRED)
         self.stdout.write(
-            self.style.SUCCESS("All %s applications successfully approved" % expired)
+            self.style.SUCCESS("All %s applications successfully expired" % expired)
         )
