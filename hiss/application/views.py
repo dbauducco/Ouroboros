@@ -47,8 +47,8 @@ class CreateApplicationView(mixins.LoginRequiredMixin, generic.CreateView):
 
 class UpdateApplicationView(mixins.LoginRequiredMixin, generic.UpdateView):
     """
-    Updates a linked Application. Updating an Application does not change the Wave it was originally submitted
-    during.
+    Updates an Application. Updating an Application does NOT change the Wave it was originally submitted
+    during, nor does it change the confirmation_deadline.
     """
 
     queryset = Application.objects.all()
@@ -73,7 +73,7 @@ class UpdateApplicationView(mixins.LoginRequiredMixin, generic.UpdateView):
 
 class ConfirmApplicationView(mixins.LoginRequiredMixin, views.View):
     """
-    Changes an application's status from STATUS_ADMITTED to STATUS_CONFIRMED
+    Changes an application's status from STATUS_ADMITTED to STATUS_CONFIRMED.
     """
 
     def post(self, request: HttpRequest, *args, **kwargs):

@@ -16,6 +16,7 @@ class ApplicationModelForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # HACK: Hard-coded HTML for linking the MLH Code of Conduct.
         self.fields["agree_to_coc"].label = mark_safe(
             'I agree to the <a href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">MLH Code of Conduct</a>'
         )
@@ -27,7 +28,7 @@ class ApplicationModelForm(forms.ModelForm):
 
     def is_valid(self) -> bool:
         """
-        Checks to ensure that a wave is currently active.
+        Checks to ensure that a Wave is currently active.
         """
         if not application_models.Wave.objects.active_wave():
             self.add_error(

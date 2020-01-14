@@ -280,14 +280,19 @@ def is_alpha(val: str) -> None:
 
 class Application(models.Model):
     """
-    Represents a `Hacker`'s application to this hackathon.
+    Represents a User's application to the hackathon.
     """
 
     # META INFO
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    # The datetime when the user submitted their application. Auto-populated when the user's application is created.
     datetime_submitted = models.DateTimeField(auto_now_add=True)
+    # Which wave users applied during.
     wave = models.ForeignKey(Wave, on_delete=models.CASCADE)
+    # The User that created this Application
     user = models.ForeignKey("user.User", on_delete=models.CASCADE, null=False)
+    # The status of this application. See STATUS_OPTIONS for details.
     status = models.CharField(
         choices=STATUS_OPTIONS, max_length=1, default=STATUS_PENDING
     )
@@ -307,6 +312,7 @@ class Application(models.Model):
     question1 = models.TextField(QUESTION1_TEXT, max_length=500)
     question2 = models.TextField(QUESTION2_TEXT, max_length=500)
     question3 = models.TextField(QUESTION3_TEXT, max_length=500)
+    # The user's uploaded resume. Can only be PDF, currently, could be expanded to docx in the future.
     resume = models.FileField(
         "Upload your resume (PDF only)",
         help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
@@ -315,33 +321,45 @@ class Application(models.Model):
     )
 
     # DEMOGRAPHIC INFORMATION
+    # The school that the user attends.
     school = models.CharField("What school do you go to?", max_length=255)
+    # Their major at said school
     major = models.CharField("What's your major?", max_length=255)
+    # Their classification at said school
     classification = models.CharField(
         "What classification are you?", choices=CLASSIFICATIONS, max_length=3
     )
+    # The user's gender, if they choose to provide it.
     gender = models.CharField(
         "What's your gender?", choices=GENDERS, max_length=2, default=NO_ANSWER
     )
+    # If the user marked "Other", more details about their gender.
     gender_other = models.CharField(
         "Self-describe", max_length=255, null=True, blank=True
     )
+    # The user's race, if they choose to provide it.
     race = MultiSelectField(
         "What race(s) do you identify with?", choices=RACES, max_length=41
     )
+    # If the user marked "Other", more details about their race.
     race_other = models.CharField(
         "Self-describe", max_length=255, null=True, blank=True
     )
-
+    # The year the user will graduate from their school.
     grad_year = models.IntegerField(
         "What is your anticipated graduation year?", choices=GRAD_YEARS
     )
+    # The number of hackathons that the user has attended previously.
     num_hackathons_attended = models.CharField(
         "How many hackathons have you attended?", max_length=22, choices=HACKATHON_TIMES
     )
 
     # LEGAL INFO
+    # Whether or not the user agrees to the Code of Conduct. The help text for this field can be found in
+    # application/forms.py
     agree_to_coc = models.BooleanField(choices=AGREE, default=None)
+    # The user confirms that they are an adult (and can present verification at the door), or that they will be
+    # accompanied by an adult or prove they attend TAMU.
     is_adult = models.BooleanField(
         "Please confirm you are 18 or older.",
         choices=AGREE,
@@ -354,19 +372,23 @@ class Application(models.Model):
     shirt_size = models.CharField(
         "What size shirt do you wear?", choices=SHIRT_SIZES, max_length=4
     )
+    # What mode of transportation the User will be taking to the event.
     transport_needed = models.CharField(
         "How will you be getting to the event?", choices=TRANSPORT_MODES, max_length=11
     )
+    # If the User will be needing travel reimbursement (not guaranteed).
     travel_reimbursement = models.BooleanField(
         "I'd like to apply for travel reimbursement",
         default=False,
         help_text="Travel reimbursement is only provided if you stay the whole time and submit a project.",
     )
+    # Anything else the User might need?
     additional_accommodations = models.TextField(
         "Do you require any special accommodations at the event?",
         max_length=500,
         blank=True,
     )
+    # Any dietary restrictions the User might have.
     dietary_restrictions = models.CharField(
         "Do you have any dietary restrictions?",
         choices=DIETARY_RESTRICTIONS,
@@ -375,6 +397,9 @@ class Application(models.Model):
     )
 
     # CONFIRMATION DEADLINE
+
+    # When the User has to confirm by. This field _MUST_ be set when the User's application status changes from
+    # PENDING to ADMITTED.
     confirmation_deadline = models.DateTimeField(null=True, blank=True)
 
     # MISCELLANEOUS
